@@ -6,6 +6,10 @@
 ```
 $ python -m venv [name]
 ```
+- Activate venv:
+```
+$ source venv\bin\activate
+```
 
 - Download and install 'MySQL Connector":
 ```
