@@ -51,17 +51,17 @@ table_list_of_medicaments = '''CREATE TABLE list_of_medicaments (
                             )'''
 
 # Define SQL commands for inserting sample data into the tables
-insert_address_data = '''INSERT INTO address (street, street_number, city, zip_code) VALUES'''
+insert_address_data = '''INSERT INTO address (street, street_number, city, zip_code) VALUES (%s, %s, %s, %s)'''
 
-insert_doctor_data = '''INSERT INTO doctor (name, surname, address_id, phone_number, email) VALUES'''
+insert_doctor_data = '''INSERT INTO doctor (name, surname, address_id, phone_number, email) VALUES (%s, %s, %s, %s, %s)'''
 
-insert_patient_data = '''INSERT INTO patient (name, surname, address_id, insurance_company) VALUES'''
+insert_patient_data = '''INSERT INTO patient (name, surname, address_id, insurance_company) VALUES (%s, %s, %s, %s)'''
 
-insert_medicament_data = '''INSERT INTO medicament (name, price_insurance, price_patient, unit) VALUES'''
+insert_medicament_data = '''INSERT INTO medicament (name, price_insurance, price_patient, unit) VALUES (%s, %s, %s, %s)'''
 
-insert_prescription_data = '''INSERT INTO prescription (doctor_id, patient_id, valid_from, valid_to, is_released) VALUES'''
+insert_prescription_data = '''INSERT INTO prescription (doctor_id, patient_id, valid_from, valid_to, is_released) VALUES (%s, %s, %s, %s, %s)'''
 
-insert_list_of_medicaments_data = '''INSERT INTO list_of_medicaments (prescription_id, medicament_id, amount) VALUES'''
+insert_list_of_medicaments_data = '''INSERT INTO list_of_medicaments (prescription_id, medicament_id, amount) VALUES (%s, %s, %s)'''
 
 # Define sample data for the tables
 values_address = [
@@ -70,7 +70,7 @@ values_address = [
     ('Pacientská', 2, 'Engetov', '567 89')
 ]
 
-values_doctor = [('Jan', 'Doktor', 1, '+420 123 456 789', 'doktor@engeto.cz')]
+values_doctor = ('Jan', 'Doktor', 1, '+420 123 456 789', 'doktor@engeto.cz')
 
 values_patient = [
     ('Petr', 'Pacient', 2, 'Engeto insurance'),
@@ -134,28 +134,29 @@ mycursor.execute(table_patient)
 # Create the medicament table
 mycursor.execute(table_medicament)
 
+# Create the prescription table
+mycursor.execute(table_prescription)
+
+# Create the list of medicaments
+mycursor.execute(table_list_of_medicaments)
+
 # Insert sample data into the address table
-for value in values_address:
-    mycursor.execute(insert_address_data, value)
+mycursor.executemany(insert_address_data, values_address)
 
 # Insert sample data into the doctor table
 mycursor.execute(insert_doctor_data, values_doctor)
 
 # Insert sample data into patient table
-for value in values_patient:
-    mycursor.execute(insert_patient_data, value)
+mycursor.executemany(insert_patient_data, values_patient)
 
 # Insert sample data into medicament table
-for value in values_medicament:
-    mycursor.execute(insert_medicament_data, value)
+mycursor.executemany(insert_medicament_data, values_medicament)
 
 # Insert sample data into prescription table
-for value in values_prescription:
-    mycursor.execute(insert_prescription_data, value)
+mycursor.executemany(insert_prescription_data, values_prescription)
 
 # Insert sample data into list of medicaments table
-for value in values_list_of_medicaments:
-    mycursor.execute(insert_list_of_medicaments_data, value)
+mycursor.executemany(insert_list_of_medicaments_data, values_list_of_medicaments)
     
 # Commit the changes
 mydb.commit()
