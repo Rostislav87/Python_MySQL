@@ -44,6 +44,12 @@ table_prescription = '''CREATE TABLE prescription (
                         is_released BOOLEAN
                      )'''
 
+table_list_of_medicaments = '''CREATE TABLE list_of_medicaments (
+                               prescription_id INT,
+                               medicament_id INT,
+                               amount INT
+                            )'''
+
 # Define SQL commands for inserting sample data into the tables
 insert_address_data = '''INSERT INTO address (street, street_number, city, zip_code) VALUES'''
 
@@ -54,6 +60,8 @@ insert_patient_data = '''INSERT INTO patient (name, surname, address_id, insuran
 insert_medicament_data = '''INSERT INTO medicament (name, price_insurance, price_patient, unit) VALUES'''
 
 insert_prescription_data = '''INSERT INTO prescription (doctor_id, patient_id, valid_from, valid_to, is_released) VALUES'''
+
+insert_list_of_medicaments_data = '''INSERT INTO list_of_medicaments (prescription_id, medicament_id, amount) VALUES'''
 
 # Define sample data for the tables
 values_address = [
@@ -85,6 +93,24 @@ values_prescription = [
     (1, 1, '2019-10-08 08:05:40', '2019-10-18 08:05:40', True),
     (1, 1, '2019-11-11 09:12:42', '2019-11-21 09:12:42', False),
     (1, 2, '2019-11-11 10:07:35', '2019-11-21 10:07:35', False)
+]
+
+values_list_of_medicaments = [
+    (1, 1, 2),
+    (1, 4, 100),
+    (2, 3, 2),
+    (2, 4, 250),
+    (3, 1, 1),
+    (3, 2, 3),
+    (3, 3, 2),
+    (4, 3, 1),
+    (4, 4, 150),
+    (5, 1, 3),
+    (5, 2, 1),
+    (5, 4, 300),
+    (5, 5, 300),
+    (6, 2, 4),
+    (6, 5, 400)
 ]
 
 # Connect to the database and create the tables
@@ -127,5 +153,9 @@ for value in values_medicament:
 for value in values_prescription:
     mycursor.execute(insert_prescription_data, value)
 
+# Insert sample data into list of medicaments table
+for value in values_list_of_medicaments:
+    mycursor.execute(insert_list_of_medicaments_data, value)
+    
 # Commit the changes
 mydb.commit()
